@@ -1,4 +1,5 @@
-#include<stdio.h>
+#include <stdio.h>
+
 /**
  * main - Entry point
  *
@@ -6,10 +7,16 @@
  */
 int main(void)
 {
-	printf("size of a char:  %lu byte(s)\n", \sizeof(char));
-	printf("size of an int:  %lu byte(s)\n",  \(int)sizeof(int));
-	printf("size of a long int:  %lu byte(s)\n",  \(int)sizeof(long int));
-	printf("size of a long long int:  %lu byte(s)\n", \(int)sizeof(long long int));
-	printf("size of a float:  %lu byte(s)\n", \(int)sizeof(float));
+	int a;
+	long int b;
+	long long int c;
+	char d;
+	float f;
+
+	printf("Size of a char: %lu byte(s)\n", (unsigned long)sizeof(d));
+	printf("Size of an int: %lu byte(s)\n", (unsigned long)sizeof(a));
+	printf("Size of a long int: %lu byte(s)\n", (unsigned long)sizeof(b));
+	printf("Size of a long long int: %lu byte(s)\n", (unsigned long)sizeof(c));
+	printf("Size of a float: %lu byte(s)\n", (unsigned long)sizeof(f));
 	return (0);
 }
