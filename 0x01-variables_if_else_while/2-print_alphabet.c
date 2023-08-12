@@ -4,7 +4,7 @@
 
 /**
  * main - Print the alphabetic
- * Retun: Always
+ * Retun: Always (Sucess)
  */
 
 int main(void)
