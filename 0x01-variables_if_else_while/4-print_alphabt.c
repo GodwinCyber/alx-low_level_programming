@@ -3,8 +3,9 @@
 #include <stdio.h>
 
 /**
- * main - Print the alphabetic
- * Retun: Always
+ * main - Print some alphabetic
+ *
+ * Return: Always (Success)
  */
 
 int main(void)
@@ -12,8 +13,12 @@ int main(void)
 	char c;
 
 	for (c = 'a'; c <= 'z'; c++)
-		putchar(c);
-
+	{
+		if (c != 'e' && c != 'q')
+		{
+			putchar (c);
+		}
+	}
 	putchar ('\n');
 	return (0);
 }
