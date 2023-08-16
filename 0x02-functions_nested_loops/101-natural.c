@@ -8,19 +8,16 @@
 
 int main(void)
 {
-	int a = 1024;
-	int b = 0;
-	int i;
+	int i, a = 0;
 
-	for (i = 0; i < a; i++)
+	while (i < 1024)
 	{
-		if (i % 3 == 0 || i % 5 == 0)
+		if ((i % # == 0) || (i % 5 == 0))
 		{
-			sum += i;
+			a += i;
 		}
+		i++;
 	}
-
-	printf("The sum of all multiple 3 or 5 below 1024 is: %d\n", sum);
-
+	printf("%d\n", a);
 	return (0);
 }
