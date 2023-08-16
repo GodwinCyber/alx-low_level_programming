@@ -8,20 +8,22 @@
 int main(void)
 {
 	int i = 0;
-	long n = 1, m = 2, sum = m;
+	long a = 1, b = 2;
 
-	while (m + n < 4000000)
+	while (i < 50)
 	{
-		m += n;
-
-		if (m % 2 == 0)
-			sum += m;
-
-		n = m - n;
-
-		++i;
+	if (i == 0)
+	printf("%ld", a);
+	else if (i == 1)
+	printf(", %ld", b);
+	else
+	{
+	b += a;
+	a = b - a;
+	printf(", %ld", b);
 	}
-
-	printf("%ld\n", sum);
+	++i;
+	}
+	printf("\n");
 	return (0);
 }
