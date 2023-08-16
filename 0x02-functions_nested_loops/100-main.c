@@ -4,8 +4,9 @@
  * print_times_table - check the code.
  * Return: Always 0.
  */
-int main(void)
-{
+void print_times_table(int n);
+	int main(void)
+	{
 	print_times_table(3);
 	_putchar ('\n');
 	print_times_table(5);
