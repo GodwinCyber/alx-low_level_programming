@@ -21,7 +21,7 @@ int main(void)
 			hold1 = (b1 + b2) / LARGEST;
 			hold2 = (b1 + b2) % LARGEST;
 			hold3 = a1 + a2 + hold1;
-			a = a2, a2 = hold3;
+			a1 = a2, a2 = hold3;
 			b1 = b2, b2 = hold2;
 			printf("%lu%010lu", a2, b2);
 		}
