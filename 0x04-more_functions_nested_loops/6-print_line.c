@@ -3,7 +3,7 @@
 /**
  * print_line - draws a straight line in the terminal.
  * @n: is the parameter, the number of time
- * Return: \n if n is 0 or less
+ * Return: n if n is 0 or less
  */
 
 void print_line(int n)
