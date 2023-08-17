@@ -1,7 +1,9 @@
 #include "main.h"
 
 /**
- * int mul - multiplies two integers.
+ * mul - multiplies two integers.
+ * @a: print a
+ * @b: print b
  * Return: Always (Success)
  */
 
