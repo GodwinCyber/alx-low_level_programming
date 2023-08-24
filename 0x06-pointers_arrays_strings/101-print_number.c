@@ -2,8 +2,9 @@
 #include <stdio.h>
 
 /**
- * print_number - prints an integer.
+ * print_number - prints an iinteger.
  * @n: integer to be printed
+ * Return: Always 0
  */
 
 void print_number(int n)
