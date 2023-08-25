@@ -24,7 +24,7 @@ void print_buffer(char *b, int size)
 		j = size - a < 10 ? size - a : 10;
 		printf("%08x: ", a);
 		for (i = 0; i < 10; i++)
-	{
+		{
 		if (i < j)
 			printf("%02x", *(b + a + i));
 			else
