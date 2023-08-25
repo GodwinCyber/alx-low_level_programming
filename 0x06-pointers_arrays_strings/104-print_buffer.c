@@ -25,10 +25,10 @@ void print_buffer(char *b, int size)
 		printf("%08x: ", a);
 		for (i = 0; i < 10; i++)
 		{
-		if (i < j)
-			printf("%02x", *(b + a + i));
+			if (i < j)
+				printf("%02x", *(b + a + i));
 			else
-				printf(" ");
+				printf("  ");
 
 			if (i % 2)
 			{
