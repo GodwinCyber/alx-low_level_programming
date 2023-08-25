@@ -5,45 +5,47 @@
  * print_buffer - print the content of a buufer in a specific format
  * @b: Pointer to the buffer to be printed
  * @size: size of the buffer
- * Return: the buffer
+ * Return: void
  */
 
 void print_buffer(char *b, int size)
 {
-	int i, j;
+	int i, j, a;
+
+	a = 0;
 
 	if (size <= 0)
 	{
 		printf("\n");
 		return;
 	}
-	for (i = 0; i < size; i += 10)
+	while (a < size)
 	{
-		printf("%80x: ", i);
-		{
-
-			if (i + j < size)
-				printf("%02x", (unsigned char) b[i + j]);
+		j = size - a < 10 ? size - a : 10;
+		printf("%08x: ", a);
+		for (i = 0; i < 10; i++)
+	{
+		if (i < j)
+			printf("%02x", *(b + a + i));
 			else
 				printf(" ");
 
-			if (j % 2 == 1)
+			if (i % 2)
+			{
 				printf(" ");
+			}
 		}
-		for (j = 0; j < 10; j++)
+		for (i = 0; i < j; i++)
 		{
-			if (i + j < size)
+			int z = *(b + a + i);
+
+			if (z < 32 || z > 132)
 			{
-				if (isprint((unsigned char)b[i + j]))
-					printf("%c", b[i + j]);
-				else
-					printf(",");
+				z = '.';
 			}
-			else
-			{
-				printf(" ");
-			}
+			printf("%c", z);
 		}
 		printf("\n");
+		a += 10;
 	}
 }
