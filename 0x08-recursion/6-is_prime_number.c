@@ -13,11 +13,11 @@ int check_prime(int n, int a)
 {
 	if (a == n)
 	{
-		return (0);
+		return (1);
 	}
 	if (n % a == 0)
 	{
-		return (1);
+		return (0);
 	}
 	return (check_prime(n, a  + 1));
 }
