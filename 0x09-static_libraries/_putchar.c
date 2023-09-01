@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
+#include <unistd.h>
 /**
  * _putchar - Write the character to the standard out srdout
  * @c: The charcater to be writen, write the c character to the stdout
@@ -14,5 +14,5 @@
 
 int _putchar(char c)
 {
-	return (1, &c, 1);
+	return write (1, &c, 1);
 }
