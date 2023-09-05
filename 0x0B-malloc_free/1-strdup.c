@@ -14,13 +14,16 @@
 
 char *_strdup(char *str)
 {
-	size_t len = strlen(str);
-	char *dupe_str = (char *)malloc((len + 1) * sizeof(char));
+	size_t len;
+	char *dupe_str;
 
 	if (str == NULL)
 	{
 		return (NULL);
 	}
+	len = strlen(str);
+	dupe_str = (char *)malloc((len + 1) * sizeof(char));
+
 	if (dupe_str == NULL)
 	{
 		return (NULL);
