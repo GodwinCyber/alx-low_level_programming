@@ -1,121 +1,76 @@
 #include "main.h"
 
-char **strtow(char *str);
-int countWords(char *str);
-char *copyWord(char *str, int start, int end);
-
 /**
- * countWords - count the number of words in
- * strings argunment.
- * @str: the input string to be counted
- * Return: the number of words in input strings
+ * count_word - helper function to count the number of words in a string
+ * @s: string to evaluate
+ *
+ * Return: number of words
  */
- 
-int countWords(char *str)
+int count_word(char *s)
 {
-        int count = 0;
-        int i = 0;
+	int flag, c, w;
 
-        while (str[i] != '\0')
-        {
-                while (str[i] == ' ')
-                {
-                        i++;
-                }
-                if (str[i] != '\0')
-                {
-                        count++;
-                }
-                while (str[i] != ' ' && str[i] != '\0')
-                {
-                        i++;
-                }
-        }
-        return (count);
+	flag = 0;
+	w = 0;
+
+	for (c = 0; s[c] != '\0'; c++)
+	{
+		if (s[c] == ' ')
+			flag = 0;
+		else if (flag == 0)
+		{
+			flag = 1;
+			w++;
+		}
+	}
+
+	return (w);
 }
-
 /**
- *  copyWord - allocate memory to the words and copy it
- *  @str: The input string containing the word
- *  @start: The starting index of the word within the input string
- *  @end: The ending index of the word within the input string
- *  Return: A dynamically allocated string containing the copied word
+ * **strtow - splits a string into words
+ * @str: string to split
+ *
+ * Return: pointer to an array of strings (Success)
+ * or NULL (Error)
  */
-
-char *copyWord(char *str, int start, int end)
-{
-        int length = end - start;
-        char *word = (char *)malloc((length + 1) * sizeof(char));
-        int i;
-
-        if (word == NULL)
-        {
-                return (NULL);
-        }
-        for (i = 0; i < length; i++)
-        {
-                word[i] = str[start + i];
-        }
-        word[length] = '\0';
-        return (word);
-}
-
-/**
- * strtow - Split a string into words
- * @str: The input string to be split
- * Return: A dynamically allocated array of strings (words)
- */
-
 char **strtow(char *str)
 {
-        char **words;
-        int i, wordIndex, wordStart, wordCount, j;
+	char **matrix, *tmp;
+	int i, k = 0, len = 0, words, c = 0, start, end;
 
-        if (str == NULL || *str == '\0')
-        {
-                return (NULL);
-        }
-        wordCount = countWords(str);
-        words = (char **)malloc((wordCount + 1) * sizeof(char *));
+	while (*(str + len))
+		len++;
+	words = count_word(str);
+	if (words == 0)
+		return (NULL);
 
-        if (words == NULL)
-        {
-                return (NULL);
-        }
-        i = 0;
-        wordIndex = 0;
-        wordStart = -1;
+	matrix = (char **) malloc(sizeof(char *) * (words + 1));
+	if (matrix == NULL)
+		return (NULL);
 
-        while (str[i] != '\0')
-        {
-                while (str[i] == ' ')
-                {
-                        i++;
-                }
-                if (str[i] != '\0')
-                {
-                        wordStart = i;
-                }
-                while (str[i] != ' ' && str[i] != '\0')
-                {
-                        i++;
-                }
-                if (wordStart != -1)
-                {
-                        words[wordIndex] = copyWord(str, wordStart, i);
-                        if (words[wordIndex] == NULL)
-                        {
-                                for (j = 0; j < wordIndex; j++)
-                                {
-                                        free(words[j]);
-                                }
-                                free(words);
-                                return (NULL);
-                        }
-                        wordIndex++;
-                        wordStart = -1;
-                }
-        }
-        words[wordCount] = NULL;
-        return (words);
+	for (i = 0; i <= len; i++)
+	{
+		if (str[i] == ' ' || str[i] == '\0')
+		{
+			if (c)
+			{
+				end = i;
+				tmp = (char *) malloc(sizeof(char) * (c + 1));
+				if (tmp == NULL)
+					return (NULL);
+				while (start < end)
+					*tmp++ = str[start++];
+				*tmp = '\0';
+				matrix[k] = tmp - c;
+				k++;
+				c = 0;
+			}
+		}
+		else if (c++ == 0)
+			start = i;
+	}
+
+	matrix[k] = NULL;
+
+	return (matrix);
 }
