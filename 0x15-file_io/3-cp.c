@@ -1,11 +1,4 @@
 #include "main.h"
-#include <errno.h>
-
-
-int open_source_file(const char *filename);
-int open_target_file(const char *filename);
-void copy_file(int source_fd, int target_fd);
-void close_file(int fd);
 
 /**
  * main - Copies the content of a file to another file.
@@ -15,104 +8,91 @@ void close_file(int fd);
  * Return: 0 on success, exit codes 97, 98, 99, or 100 on failure.
  */
 
-int main(int ac, char **av)
+int main(int argc, char *argv[])
 {
 	int source_fd, target_fd;
+	ssize_t bytes_read, bytes_written;
+	char *buffer;
 
-	if (ac != 3)
+	if (argc != 3)
 	{
-		dprintf(2, "Usage: %s file_from file_to\n", av[0]);
+		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
 		exit(97);
 	}
-
-	source_fd = open_source_file(av[1]);
-	target_fd = open_target_file(av[2]);
-
-	copy_file(source_fd, target_fd);
-
-	close_file(source_fd);
-	close_file(target_fd);
-
-	return (0);
-}
-
-/**
- * open_source_file - Opens the source file for reading.
- * @filename: The name of the source file to open.
- *
- * Return: The file descriptor of the opened file.
- */
-
-int open_source_file(const char *filename)
-{
-	int source_fd = open(filename, O_RDONLY);
-
-	if (source_fd == -1)
-	{
-		dprintf(2, "Error: Can't read from file %s\n", filename);
-		exit(98);
-	}
-	return (source_fd);
-}
-
-/**
- * open_target_file - Opens the target file for writing.
- * @filename: The name of the target file to open.
- *
- * Return: The file descriptor of the opened file.
- */
-
-int open_target_file(const char *filename)
-{
-	int target_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC,
-			S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
-
-	if (target_fd == -1)
-	{
-		dprintf(2, "Error: Can't write to file %s\n", filename);
-		exit(99);
-	}
-	return (target_fd);
-}
-
-/**
- * copy_file - Copies the content from the source file to the target file.
- * @source_fd: The file descriptor of the source file.
- * @target_fd: The file descriptor of the target file.
- */
-
-void copy_file(int source_fd, int target_fd)
-{
-	ssize_t bytes_read, bytes_written;
-	char buffer[BUFFER_SIZE];
+	buffer = allocate_buffer(argv[2]);
+	source_fd = open(argv[1], O_RDONLY);
 
 	while ((bytes_read = read(source_fd, buffer, BUFFER_SIZE)) > 0)
 	{
-		bytes_written = write(target_fd, buffer, bytes_read);
-		if (bytes_written == -1)
+		target_fd = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+
+		if (target_fd == -1)
 		{
-			dprintf(2, "Error: Can't write to file\n");
+			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+			free(buffer);
+			close_fd(source_fd);
 			exit(99);
 		}
+		bytes_written = write(target_fd, buffer, bytes_read);
+
+		if (bytes_written == -1)
+		{
+			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+			free(buffer);
+			close_fd(source_fd);
+			close_fd(target_fd);
+			exit(99);
+		}
+
+		close_fd(target_fd);
 	}
 
 	if (bytes_read == -1)
 	{
-		dprintf(2, "Error: Can't read from file\n");
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		free(buffer);
+		close_fd(source_fd);
 		exit(98);
 	}
+
+	free(buffer);
+	close_fd(source_fd);
+
+	return 0;
 }
 
 /**
- * close_file - Closes a file descriptor.
- * @fd: The file descriptor to close.
+ * allocate_buffer - Allocates 1024 bytes for a buffer.
+ * @file: The name of the file buffer is storing chars for.
+ *
+ * Return: A pointer to the newly-allocated buffer.
  */
 
-void close_file(int fd)
+char *allocate_buffer(const char *file)
 {
-	if (close(fd) == -1)
+	char *buffer = malloc(sizeof(char) * BUFFER_SIZE);
+
+	if (buffer == NULL)
 	{
-		dprintf(2, "Error: Can't close fd %d\n", fd);
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file);
+		exit(99);
+	}
+
+	return buffer;
+}
+
+/**
+ * close_file - Closes file descriptors.
+ * @fd: The file descriptor to be closed.
+ */
+
+void close_fd(int fd)
+{
+	int result = close(fd);
+
+	if (result == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
 		exit(100);
 	}
 }
