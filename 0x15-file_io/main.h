@@ -10,10 +10,10 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#define BUFFER_SIZE 1024
-
-char *allocate_buffer(const char *file);
-void close_fd(int fd);
+void handle_close(int f_dr);
+void handle_rdwr(int f_d, int f_dwr, char *BUFF, char *ptr1, char *ptr2);
+void handle_args(int arg_number, char *arg_first);
+int _strcmp(char *str1, char *str2);
 int main(int ac, char **av);
 int _putchar(char c);
 ssize_t read_textfile(const char *filename, size_t letters);
