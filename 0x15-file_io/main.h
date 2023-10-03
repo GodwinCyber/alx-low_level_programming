@@ -10,10 +10,10 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-void handle_close(int f_dr);
-void handle_rdwr(int f_d, int f_dwr, char *BUFF, char *ptr1, char *ptr2);
-void handle_args(int arg_number, char *arg_first);
-int _strcmp(char *str1, char *str2);
+void handle_rdwr(int fdrd, int fdwr, char *buff, char *av1, char *av2);
+void handle_close(int fd);
+void handle_args(int ac, char *av0);
+int _strcmp(char *s1, char *s2);
 int main(int ac, char **av);
 int _putchar(char c);
 ssize_t read_textfile(const char *filename, size_t letters);

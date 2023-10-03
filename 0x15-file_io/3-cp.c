@@ -1,75 +1,163 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include "main.h"
 
-void open_close_status(int status, int f_dr, char *filename, char mode);
+
+void handle_rdwr(int fdrd, int fdwr, char *buff, char *av1, char *av2);
+void handle_close(int fd);
+void handle_args(int ac, char *av0);
+int _strcmp(char *s1, char *s2);
 
 /**
- * open_close_status - checks if a file can be opened or closed
- * @status: file descriptor of the file to be opened
- * @filename: name of the file
- * @mode: closing or opening
- * @f_dr: file descriptor
- *
- * Return: void
+ * handle_rdwr - reads from file referenced by fdrd to
+ * file referenced by fdwr, handling any read/write errors.
+ * @fdrd: file descriptor of file to read from.
+ * @fdwr: file descriptor of file to write to.
+ * @buff: buffer of 1 kb.
+ * @av1: pointer to string representation of argument 1
+ * @av2: pointer to string representation of argument 2
  */
-void open_close_status(int status, int f_dr, char *filename, char mode)
+void handle_rdwr(int fdrd, int fdwr, char *buff, char *av1, char *av2)
 {
-	if (mode == 'C' && status == -1)
+	int nr, nw;
+
+	while (nr != 0)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't close f_dr %d\n", f_dr);
+		nr = read(fdrd, buff, 1024);
+		if (nr < 0)
+		{
+			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av1);
+			handle_close(fdrd);
+			handle_close(fdwr);
+			exit(98);
+		}
+
+		nw = write(fdwr, buff, nr);
+		if (nw < 0)
+		{
+			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av2);
+			handle_close(fdrd);
+			handle_close(fdwr);
+			exit(99);
+		}
+	}
+}
+
+
+/**
+ * handle_close - closes a file descriptor with proper error handling
+ * @fd: file descriptor to close
+ */
+void handle_close(int fd)
+{
+	int n = close(fd);
+
+	if (n < 0)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
 		exit(100);
 	}
-	else if (mode == 'O' && status == -1)
+}
+
+
+/**
+ * handle_args - checks if number of main function
+ * arguments equals 3, and the first of them is equal to "cp"
+ * @ac: number if main arguments.
+ * @av0: first argument string.
+ */
+void handle_args(int ac, char *av0)
+{
+	(void)av0;
+	if ((ac != 3))
 	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", filename);
-		exit(98);
-	}
-	else if (mode == 'W' && status == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", filename);
-		exit(99);
+		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
+		exit(97);
 	}
 }
 
 /**
- * main - copies the content of one file to another
- * @argc: argument count
- * @argv: arguments passed
+ * _strcmp - compares two strings for greatness
+ * @s1: a string
+ * @s2: a string
  *
- * Return: 1 on success, exit otherwise
+ * Return: a negative integer if s1 is less than s2;
+ * a positive integer if s1 is greater than s2, and;
+ * 0 if both strings are the same
  */
-int main(int argc, char *argv[])
+int _strcmp(char *s1, char *s2)
 {
-	int source, destination, n_read = 1024, wrote,
-	    close_soource, close_destination;
-	unsigned int mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
-	char buff[1024];
+	int i, len, shift = 0;
 
-	if (argc != 3)
+	for (len = 0; *(s1 + shift);)
 	{
-		dprintf(STDERR_FILENO, "%s", "Usage: cp file_from file_to\n");
-		exit(97);
+		len++;
+		shift++;
 	}
-	source = open(argv[1], O_RDONLY);
-	open_close_status(source, -1, argv[1], 'O');
-	destination = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, mode);
-	open_close_status(destination, -1, argv[2], 'W');
-	while (n_read == 1024)
+
+	for (i = 0; (i <= (len + 1)); i++)
 	{
-		n_read = read(source, buff, sizeof(buff));
-		if (n_read == -1)
-			open_close_status(-1, -1, argv[1], 'O');
-		wrote = write(destination, buff, n_read);
-		if (wrote == -1)
-			open_close_status(-1, -1, argv[2], 'W');
+		if ((*(s1 + i) == '\0') && (*(s2 + i) == '\0'))
+		{
+			return (0);
+		}
+		else if ((*(s1 + i) == '\0') || (*(s2 + i) > *(s1 + i)))
+		{
+			/*return the difference between the two characters*/
+			return ((*(s1 + i)) - (*(s2 + i)));
+		}
+		else if ((*(s2 + i) == '\0') || (*(s1 + i) > *(s2 + i)))
+		{
+			return ((*(s1 + i)) - (*(s2 + i)));
+		}
 	}
-	close_soource = close(source);
-	open_close_status(close_soource, source, NULL, 'C');
-	close_destination = close(destination);
-	open_close_status(close_destination, destination, NULL, 'C');
+	return (0);
+}
+
+/**
+ * main - copies the content of a file to another file.
+ * @ac: the number of arguments
+ * @av: an array of strings representing the arguments passed to main.
+ *
+ * Return: always 0.
+ */
+int main(int ac, char *av[])
+{
+	int fdrd, fdwr;
+	char *buff;
+
+	handle_args(ac, av[0]);
+	buff = malloc(1025);
+	if (buff == NULL)
+	{
+		exit(EXIT_FAILURE);
+	}
+	buff[1024] = 0;
+
+	fdrd = open(av[1], O_RDONLY);
+	if (fdrd < 0)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]);
+		exit(98);
+	}
+
+	fdwr = open(av[2], O_WRONLY | O_CREAT | O_TRUNC, 0664);
+	if (fdwr < 0)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]);
+		handle_close(fdrd);
+		exit(99);
+	}
+	handle_rdwr(fdrd, fdwr, buff, av[1], av[2]);
+
+	handle_close(fdrd);
+	handle_close(fdwr);
+	free(buff);
+
 	return (0);
 }
