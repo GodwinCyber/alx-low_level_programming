@@ -43,3 +43,14 @@ You will be asked to write files containing big O notations. Please use this for
   <li>n * log(n) -> O(nlog(n))</li>
   <li>…</li>
 </ul>
+<ul>
+  <li><code>O(1)</code></li>
+  <li><code>O(n)</code></li>
+  <li><code>O(n!)</code></li>
+  <li>n*m -&gt; <code>O(nm)</code></li>
+  <li>n square -&gt; <code>O(n^2)</code></li>
+  <li>sqrt n -&gt; <code>O(sqrt(n))</code></li>
+  <li>log(n) -&gt; <code>O(log(n))</code></li>
+  <li>n * log(n) -&gt; <code>O(nlog(n))</code></li>
+  <li>&hellip;</li>
+</ul>
