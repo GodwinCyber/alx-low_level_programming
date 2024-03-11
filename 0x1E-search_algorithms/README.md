@@ -5,6 +5,8 @@ Read or Watch<br>
 <a href="https://en.wikipedia.org/wiki/Search_algorithm">Search algorithm</a><br>
 <a href="https://www.geeksforgeeks.org/g-fact-86/">Space complexity (1)</a><br>
 <a href="https://www.youtube.com/playlist?list=PLEJXowNB4kPwTb4BivkY0dENHmXdOEM3V">Serach Algorithms video playlist</a><br>
+<h2>Learning Objectives</h2>
+At the end of this project, you are expected to be able to <a href="https://fs.blog/feynman-learning-technique/">explain to anyone</a>, <strong>without the help of Google:</strong><br>
 <h3>General</h3>
 <p>
 What is a search algorithm<br>
