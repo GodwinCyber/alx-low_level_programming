@@ -33,17 +33,6 @@ All your header files should be include guarded<br>
 <h2>More Info</h2>
 You will be asked to write files containing big O notations. Please use this format:<br>
 <ul>
-  <li>O(1)</li>
-  <li>O(n)</li>
-  <li>O(n!)</li>
-  <li>n*m -> O(nm)</li>
-  <li>n square -> O(n^2)</li>
-  <li>sqrt n -> O(sqrt(n))</li>
-  <li>log(n) -> O(log(n))</li>
-  <li>n * log(n) -> O(nlog(n))</li>
-  <li>…</li>
-</ul>
-<ul>
   <li><code>O(1)</code></li>
   <li><code>O(n)</code></li>
   <li><code>O(n!)</code></li>
