@@ -19,7 +19,7 @@ Allowed editors: vi, vim, emacs<br>
 All your files will be compiled on Ubuntu 20.04 LTS using gcc, using the options -Wall -Werror -Wextra -pedantic -std=gnu89<br>
 All your files should end with a new line<br>
 A README.md file, at the root of the folder of the project, is mandatory<br>
-Your code should use the Betty style. It will be checked using betty-style.pl and betty-doc.pl<br>
+Your code should use the Betty style. It will be checked using <a href="https://github.com/alx-tools/Betty/blob/master/betty-style.pl">betty-style.pl</a> and <a href="https://github.com/alx-tools/Betty/blob/master/betty-doc.pl">betty-doc.pl</a><br>
 You are not allowed to use global variables<br>
 No more than 5 functions per file<br>
 You are only allowed to use the printf function of the standard library. Any call to another function like strdup, malloc, … is forbidden.<br>
