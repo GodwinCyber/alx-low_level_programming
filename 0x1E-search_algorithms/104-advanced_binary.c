@@ -1,7 +1,5 @@
 #include "search_algos.h"
 
-int _binary_recursive(int *array, size_t left, size_t right, int value);
-
 /**
  * _binary_recursive - Recursively searches for a value
  * in a sorted array of integers
