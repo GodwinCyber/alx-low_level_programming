@@ -1,7 +1,7 @@
 #include "search_algos.h"
 
 /**
- * _binary_recursive - Recursively searches for a value
+ * binary_recursion - Recursively searches for a value
  * in a sorted array of integers
  * @array: A pointer to the first element of the array to search in
  * @left: The starting index of the subarray to search in
@@ -9,7 +9,7 @@
  * @value: The value to search for
  * Return: The index where value is located or -1 if value is not present
  */
-int _binary_recursive(int *array, size_t left, size_t right, int value)
+int binary_recursion(int *array, size_t left, size_t right, int value)
 {
 	size_t mid;
 
@@ -27,12 +27,12 @@ int _binary_recursive(int *array, size_t left, size_t right, int value)
 		if (mid == left || array[mid - 1] != value)
 			return (mid);
 		else
-			return (_binary_recursive(array, left, mid, value));
+			return (binary_recursion(array, left, mid, value));
 	}
 	else if (array[mid] < value)
-		return (_binary_recursive(array, mid + 1, right, value));
+		return (binary_recursion(array, mid + 1, right, value));
 	else
-		return (_binary_recursive(array, left, mid - 1, value));
+		return (binary_recursion(array, left, mid - 1, value));
 }
 
 /**
@@ -47,5 +47,5 @@ int advanced_binary(int *array, size_t size, int value)
 	if (array == NULL || size == 0)
 		return (-1);
 
-	return (_binary_recursive(array, 0, size - 1, value));
+	return (binary_recursion(array, 0, size - 1, value));
 }
